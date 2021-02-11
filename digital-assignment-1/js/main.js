@@ -26,7 +26,7 @@ class MyScene extends Phaser.Scene {
         this.load.audio('bgm','assets/audio/bgm.mp3');
         this.load.audio('shuriken','assets/audio/shuriken.mp3');
         this.load.audio('signal','assets/audio/slash.mp3');
-        this.load.audio('nope','assets/audio/nope2.mp3');
+        this.load.audio('nope','assets/audio/nope.mp3');
         console.log('Preload finished');
 
         
@@ -59,7 +59,7 @@ class MyScene extends Phaser.Scene {
         console.log(" random number: " + this.randomNumber);
         
         // Seting enemy's reaction time.
-        this.enemyReactionTime = Phaser.Math.Between(7,9);
+        this.enemyReactionTime = Phaser.Math.Between(7,10);
 
         // setting condition for gameplay
         this.player_isAlive = true;
@@ -128,7 +128,7 @@ class MyScene extends Phaser.Scene {
         this.signalAudio.play();
         this.signal = true;
         enemyReactionTimer = this.time.delayedCall(this.enemyReactionTime*100,this.computerWin,[], this);
-        console.log("Dueling time");
+        console.log("Dueling time " +this.enemyReactionTime);
     }
     // If the computer's timer run out of time, which means player lose. This function will execute. 
     computerWin(){
