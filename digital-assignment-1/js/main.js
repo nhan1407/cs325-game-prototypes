@@ -59,7 +59,7 @@ class MyScene extends Phaser.Scene {
         console.log(" random number: " + this.randomNumber);
         
         // Seting enemy's reaction time.
-        this.enemyReactionTime = Phaser.Math.Between(5,9);
+        this.enemyReactionTime = Phaser.Math.Between(7,12);
 
         // setting condition for gameplay
         this.player_isAlive = true;
