@@ -50,6 +50,7 @@ var hp3;
 var moveKeys;
 var playerHealth = 3;
 var enemyHealth = 3;
+var cursorKeys;
 
 var game = new Phaser.Game(config);
 var Bullet = new Phaser.Class({
@@ -148,51 +149,16 @@ function create() {
     this.cameras.main.zoom = 0.5;
     this.cameras.main.startFollow(player);
 
-    //Create object for input with WASD kets
-    // moveKeys = this.input.keyboard.addKeys({
-    //     'up': Phaser.Input.Keyboard.KeyCodes.W,
-    //     'down': Phaser.Input.Keyboard.KeyCodes.S,
-    //     'left': Phaser.Input.Keyboard.KeyCodes.A,
-    //     'right': Phaser.Input.Keyboard.KeyCodes.D
-    // });
+    // Enables movement of player with WASD keys
+    cursorKeys = this.input.keyboard.createCursorKeys();
+    cursorKeys = this.input.keyboard.addKeys(
+    {
+        up:Phaser.Input.Keyboard.KeyCodes.W,
+        down:Phaser.Input.Keyboard.KeyCodes.S,
+        left:Phaser.Input.Keyboard.KeyCodes.A,
+        right:Phaser.Input.Keyboard.KeyCodes.D
+    });
 
-    // // Enables movement of player with WASD keys
-    // this.input.keyboard.on('keydown W', function (event) {
-    //     player.setAccelerationY(-800);
-    // });
-
-    // this.input.keyboard.on('keydown S', function (event) {
-    //     player.setAccelerationY(800);
-    // });
-
-    // this.input.keyboard.on('keydown A', function (event) {
-    //     player.setAccelerationX(-800);
-    // });
-
-    // this.input.keyboard.on('keydown D', function (event) {
-    //     player.setAccelerationX(800);
-    // });
-
-    // // Stops player acceleration on upress WASD
-    // this.input.keyboard.on('keyup_W', function (event){
-    //     if(moveKeys['down'].isUp)
-    //         player.setAccelerationY(0);
-    // });
-
-    // this.input.keyboard.on('keyup_S', function (event){
-    //     if(moveKeys['down'].isUp)
-    //         player.setAccelerationY(0);
-    // });
-
-    // this.input.keyboard.on('keyup_A', function (event){
-    //     if(moveKeys['down'].isUp)
-    //         player.setAccelerationX(0);
-    // });
-
-    // this.input.keyboard.on('keyup_D', function (event){
-    //     if(moveKeys['down'].isUp)
-    //         player.setAccelerationX(0);
-    // });
 
     //Fires bullet from player on left click of mouse
     this.input.on('pointerdown', function (pointer, time, lastFired){
@@ -306,6 +272,33 @@ function constrainReticle(reticle)
         reticle.y = player.y-600;
 }
 
+function movePlayerManager()
+{
+    if (cursorKeys.up.isDown) 
+    {
+        player.setAccelerationY(-800);
+    }
+    else if (cursorKeys.down.isDown) 
+    {
+        player.setAccelerationY(800);
+    }
+    else {
+        player.setAccelerationY(0);
+    }
+    
+    if (cursorKeys.left.isDown) 
+    {
+        player.setAccelerationX(-800);
+    }
+    else if (cursorKeys.right.isDown) 
+    {
+        player.setAccelerationX(800);
+    }
+    else {
+        player.setAccelerationX(0);
+    }
+
+}
 
 function update (time, delta)
 {
@@ -315,6 +308,7 @@ function update (time, delta)
     // Rotates enemy to face towards player
     enemy.rotation = Phaser.Math.Angle.Between(enemy.x, enemy.y, player.x, player.y);
 
+    movePlayerManager();
     //Make reticle move with player
     reticle.body.velocity.x = player.body.velocity.x;
     reticle.body.velocity.y = player.body.velocity.y;
