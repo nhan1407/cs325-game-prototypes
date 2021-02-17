@@ -14,7 +14,7 @@ import "./phaser.js";
 var config = {
     type: Phaser.AUTO,
     parent: 'game',
-    backgroundColor: '#5AFF66',
+    backgroundColor: '#3A3D3F',
     width: 800,
     height: 600,
     physics: { 
@@ -41,6 +41,7 @@ var config = {
     }
 };
 var playerBullets;
+var enemyBullets;
 var player;
 var enemy;
 var reticle;
@@ -118,28 +119,41 @@ function preload() {
 
 function create() {
     
-    // set World bounds
-    this.physics.world.setBounds(0, 0, 1600, 1200);
+    var outer = new Phaser.Geom.Rectangle(0, 0, 800, 600);
+    var inner = new Phaser.Geom.Rectangle(350, 250, 100, 100);
     
     // Add Bullet Objects
-
     playerBullets = this.physics.add.group({ classType: Bullet, runChildUpdate: true});
+    enemyBullets = this.physics.add.group({ classType: Bullet, runChildUpdate: true });
+    
+    // Set world bounds
+    this.physics.world.setBounds(0, 0, 1600, 1200);
 
     // Add background, player, enemy, reticle, healthpoint, sprites
-    player = this.physics.add.sprite(800,600,'ranger');
+    player = this.physics.add.image(800,600,'ranger');
     enemy = this.physics.add.sprite(400,300,'ranger');
     reticle = this.physics.add.sprite(800, 700, 'target');
-    // hp1 = this.add.image(-350, -250, 'target').setScrollFactor(0.5, 0.5);
-    // hp2 = this.add.image(-300, -250, 'target').setScrollFactor(0.5, 0.5);
-    // hp3 = this.add.image(-250, -250, 'target').setScrollFactor(0.5, 0.5);
+    
+
+    //enemy = this.physics.add.group({ collideWorldBounds: true});
+    enemy.setOrigin(0.5, 0.5).setDisplaySize(132, 120);
+
+    this.physics.moveToObject(enemy, player, 200);
+
+
+    // for (var i = 0; i < 5; i++)
+    // {
+    //     var p = Phaser.Geom.Rectangle.RandomOutside(outer, inner);
+    //     var  = enemy.create(p.x, p.y, 'ranger');
+
+    //     this.physics.add.existing(b);
+
+    //     //b.body.setImmovable();
+    // }    
 
     // Set image/Sprite properties
     player.setOrigin(0.5, 0.5).setDisplaySize(132, 120).setCollideWorldBounds(true).setDrag(500, 500);
-    enemy.setOrigin(0.5, 0.5).setDisplaySize(132, 120).setCollideWorldBounds(true);
     reticle.setOrigin(0.5, 0.5).setDisplaySize(25, 25).setCollideWorldBounds(true);
-    // hp1.setOrigin(0.5, 0.5).setDisplaySize(50, 50);
-    // hp2.setOrigin(0.5, 0.5).setDisplaySize(50, 50);
-    // hp3.setOrigin(0.5, 0.5).setDisplaySize(50, 50);
 
     // set sprite variables
 
@@ -150,14 +164,14 @@ function create() {
     this.cameras.main.startFollow(player);
 
     // Enables movement of player with WASD keys
-    cursorKeys = this.input.keyboard.createCursorKeys();
-    cursorKeys = this.input.keyboard.addKeys(
-    {
-        up:Phaser.Input.Keyboard.KeyCodes.W,
-        down:Phaser.Input.Keyboard.KeyCodes.S,
-        left:Phaser.Input.Keyboard.KeyCodes.A,
-        right:Phaser.Input.Keyboard.KeyCodes.D
-    });
+    // cursorKeys = this.input.keyboard.createCursorKeys();
+    // cursorKeys = this.input.keyboard.addKeys(
+    // {
+    //     up:Phaser.Input.Keyboard.KeyCodes.W,
+    //     down:Phaser.Input.Keyboard.KeyCodes.S,
+    //     left:Phaser.Input.Keyboard.KeyCodes.A,
+    //     right:Phaser.Input.Keyboard.KeyCodes.D
+    // });
 
 
     //Fires bullet from player on left click of mouse
@@ -276,39 +290,63 @@ function movePlayerManager()
 {
     if (cursorKeys.up.isDown) 
     {
-        player.setAccelerationY(-800);
+        player.setVelocity(-800);
     }
     else if (cursorKeys.down.isDown) 
     {
-        player.setAccelerationY(800);
+        player.setVelocity(800);
     }
     else {
-        player.setAccelerationY(0);
+        player.setVelocity(0);
     }
     
     if (cursorKeys.left.isDown) 
     {
-        player.setAccelerationX(-800);
+        player.setVelocity(-800);
     }
     else if (cursorKeys.right.isDown) 
     {
-        player.setAccelerationX(800);
+        player.setVelocity(800);
     }
     else {
-        player.setAccelerationX(0);
+        player.setVelocity(0);
     }
 
 }
 
+function enemyFire(enemy, player, time, gameObject)
+{
+    if (enemy.active === false)
+    {
+        return;
+    }
+
+    if ((time - enemy.lastFired) > 1000)
+    {
+        enemy.lastFired = time;
+
+        // Get bullet from bullets group
+        var bullet = enemyBullets.get().setActive(true).setVisible(true);
+
+        if (bullet)
+        {
+            bullet.fire(enemy, player);
+            // Add collider between bullet and player
+            gameObject.physics.add.collider(player, bullet, playerHitCallback);
+        }
+    }
+}
+
 function update (time, delta)
 {
+    //movePlayerManager();
+
     // Rotates player to face towards reticle
     player.rotation = Phaser.Math.Angle.Between(player.x, player.y, reticle.x, reticle.y);
 
     // Rotates enemy to face towards player
     enemy.rotation = Phaser.Math.Angle.Between(enemy.x, enemy.y, player.x, player.y);
 
-    movePlayerManager();
     //Make reticle move with player
     reticle.body.velocity.x = player.body.velocity.x;
     reticle.body.velocity.y = player.body.velocity.y;
@@ -318,6 +356,10 @@ function update (time, delta)
 
     // Constrain position of constrainReticle
     constrainReticle(reticle);
+
+    // Make enemy fire
+    enemyFire(enemy, player, time, this);
+
 }
 
 
