@@ -19,29 +19,29 @@ body
 <body>
 <div id="game"></div>
 <div id="readme">
-<h2>Block Ninja Showdown</h2>
+<script src="js/main.js" type="module"></script>
+<h2>Survive in desert</h2>
 
 <ul>
 <li><strong>Originality:</strong>
-Similar to Cowboy fast draw game, but in Japanese Ninja Style
+
 </li>
 
 <li><strong>Technical Merit:</strong>
-The game mostly use the  timer feature of phaser 3, which help create a variation of random time delay in either miliseconds or seconds. It also help controling dificulty of the game become  easire. 
+The game mostly use the  timer feature of phaser 3, which help create a variation of random time delay in either miliseconds or seconds. 
+It also uses the class group feature which help spawning mutilple water bottle
+It also uses CreateCursorKeys function to recieve input and help player move character
 </li>
 
 <li><strong>Prototype Postmortem:</strong>
 What did you learn from this prototype?
-I have learn a lot throughout this prototype. Because this is the firs time I am coding in javascript, and even the first game I ever make. In my opinion, phaser 3 is actually easy to learn. However, I have some trouble with example, since the example of Phaser2 confused me a lot, and take me really long to figure out it just an outdated format. The hardest part in this prototype is learning how to use the timer feature. 
+In the beginning, I plant to make a top-down shooter game with top down mechanics example from phaser. However, I struggle with spawning more troops to fight, and I don't have much time left, so I end up with simplize it into a collector game. I have learn a lot about group this week. The hardest part (which I still not figure it out) is spawinng troop for now. I also want to learn how to make enemy chasing my character as well (which would be great for a dungeon game)
 These are techniques that I have learnt from this assignment:
 	<ul>
-		<li>Image:  <a href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Image.html">Image </a></li>
+		<li>Group:  <a href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Group.html">Group </a></li>
 	</ul>
 	<ul>
-		<li>Audio:  <a href="https://rexrainbow.github.io/phaser3-rex-notes/docs/site/audio/"> Audio </a></li>
-	</ul>
-	<ul>
-		<li>Camera:  <a href="https://rexrainbow.github.io/phaser3-rex-notes/docs/site/camera/"> Camera </a></li>
+		<li>Setting Character moving speed and acceleration:  <a href="https://photonstorm.github.io/phaser3-docs/Phaser.Types.Physics.Arcade.html"> Arcade </a></li>
 	</ul>
 	<ul>
 		<li>Timer:  <a href="https://rexrainbow.github.io/phaser3-rex-notes/docs/site/timer/"> Timer </a></li>
@@ -54,69 +54,75 @@ These are techniques that I have learnt from this assignment:
 <li><strong>Prototype Assets:</strong>
 Did you make your prototype assets from scratch? Did you borrow them? Cite your sources here.
 <ul>
-<li>8-bit forest background: <a href="https://wallpapersafari.com/w/4LxYuy">8 bit Forest</a></li>
+<li>Sand background: <a href="https://www.freepik.com/premium-photo/sand-dune-desert-texture-background_4551336.htm">Sand</a></li>
 </ul>
 <ul>
-<li>Block Ninja 2D Sprite: <a href="https://opengameart.org/content/block-ninja-2d-sprites">Block Ninja 2D Sprite</a></li>
+<li>Player Handgun Sprite: <a href="http://phaser.io/examples/v3/view/games/top-down-shooter/topdowncombatmechanics">Player handgun Sprite</a></li>
 </ul>
 <ul>
-<li>Ninja Star Impact Flesh SFX: <a href="https://www.youtube.com/watch?v=dgTNsSJa32M">Ninja Star Impact Flesh SFX</a></li>
+<li>Oasis Image: <a href="https://opengameart.org/content/lpc-sandrock-alt-colors">Oasis Image</a></li>
 </ul>
 <ul>
-<li>Instant Sword Death (Samurai Kirby) BGM: <a href="http://www.kirbysrainbowresort.net/multimedia/sounds/cate-s-nes.html">Instant Sword Death (Samurai Kirby) BGM</a></li>
+<li>Potion Image: <a href="https://opengameart.org/content/blue-potion">Potion Image</a></li>
 </ul>
 <ul>
-<li>Sword Slash SFX: <a href="https://www.youtube.com/watch?v=Oa1mfoOInbA">Sword Slash SFX</a></li>
+<li>Sad song SFX: <a href="https://youtu.be/jlcLzC5bIf0?t=196">Sad Song SFX</a></li>
 </ul>
 <ul>
-<li>NOPE! SFX: <a href="https://www.youtube.com/watch?v=dDKU_d5OpFc&t=0s">NOPE! SFX</a></li>
+<li>Desert sound BGM: <a href="https://www.youtube.com/watch?v=rWSWHkljU0c">Desert sound</a></li>
+</ul>
+<ul>
+<li>Classic song SFX: <a href="https://youtu.be/jlcLzC5bIf0?t=212">Classic song SFX</a></li>
+</ul>
+<ul>
+<li>Pick up item SFX: <a href="https://www.youtube.com/watch?v=J-21BggTCbA">Pick up Item SFX</a></li>
 </ul>
 </li>
 
 <li><strong>Prototype Closest Other Game:</strong>
-The Instant Sword Death (Samurai Kirby) minigame inspired me to make this games. This game is also one of my favorite gmae in Kirby Series.
+It come from a Phaser 3 example
 </li>
 
 <li><strong>High Concept:</strong>
-Since it is based on fast draw game, speed is everything you need to win.
+You try to survive by collecting water bottle, until you found the oasis
 </li>
 
 <li><strong>Theme:</strong>
-The theme I choose is you can't win with sound off.
+The theme is oasis. It can be counted as 3 objects (player, potion, oasis) as well
 </li>
 
 <li><strong>Mandated Variety:</strong>
-For this games, it can be an reflexibility training game, or a joker game depends on players
+For this games, it can be an RPG game with collector playstyle, key board input and a lot of randomness.
 </li>
 
 <li><strong>Prototype Goal:</strong>
 What game mechanic is this prototype evaluating?
-It would be reflexibility to the signal. 
+Controlling character and dealing with acceleration.
 </li>
 
 <li><strong>Player Experience Goals:</strong>
 What experience do you want players to have when playing your game?
-I would love to see everyone take it as a small minigame that can be both entertained and seft-training. 
+The little secret here is that I use acceleration instead of velocity to move character, so player must also deal with it as well.
 </li>
 
 <li><strong>Gameplay:</strong>
 A paragraph describing the actions the player can perform, the system dynamics, and the core mechanic. Include a concise explanation of the prototype’s inputs and their expected effects (how to play). You can also describe game play that is not in the prototype. You may include mock-up images for parts of the game not in the prototype.
-Since it just a minigame, so I don't think it take a paragraph for a tutorial. Everything you need to do is press the SPACEBAR as fast as possible after you here the signal to help your little block ninja win the battle 
+Since it just a minigame, so I don't think it take a paragraph for a tutorial. Everything you need to do is move your character to collect water to survive until the oasis appear
 </li>
 
 <li><strong>Strategies:</strong>
 What player strategies do you expect will be effective at playing this game?
-The strategies could be predicting the range of time when the signal is played, then player can be well prepare than usual.
+Strategie here could be collecting bottle that far away first then collect bottles closer later, mutiple bottle near each other can help you full fill health that you were lost. If you do opposite in early game, health will hit the max capacity and waste your time.
 </li>
 
 <li><strong>Story/Setting/Premise:</strong>
 A paragraph about the world your game is set in and who the characters are. What makes the game world and its occupants unique and interesting? Do the tokens represent something? If the game has a backstory, mention it here. If the game is abstract, then say so.
 How will the dramatic tension interact with the gameplay tension?
-	the game doesn't have a backstory, but I use ninja showdown as the main theme of the game, plus the game play is also fast, so it would make the player have better feeling to the awsomeness, but still mystery of the game
+	Player get lost in a desert, they must collect as much water as possible to survive before he reach the oasis
 </li>
 
 <li><strong>Target Audience:</strong>
-It would be kid and young teenager. Anyone who is interested in ninja.
+It would be kid and young teenager.
 </li>
 
 <li><strong>Play Time:</strong>
@@ -128,6 +134,5 @@ It should take sometime around 10 seconds for each round.
 </div>
 
 <!-- main.js must come at the end since it expects the HTML to have been created. -->
-<script src="js/main.js" type="module"></script>
 </body>
 </html>
