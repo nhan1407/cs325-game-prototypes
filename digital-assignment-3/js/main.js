@@ -33,7 +33,7 @@ class MyScene extends Phaser.Scene {
     }
 
     preload ()
-    {
+    {   //load background and ground layer
         this.load.image('bg', 'assets/scroll/background.png');
         this.load.image('ground', 'assets/pirate-map.png');
 
@@ -43,11 +43,13 @@ class MyScene extends Phaser.Scene {
         this.load.image('mountain', 'assets/scroll/mountain.png');
         this.load.image('cloud', 'assets/scroll/cloud.png');
 
-
-        //this.load.image('bomb', 'assets/bomb.png');
+        //load character
         this.load.spritesheet('dude-right', 'assets/character/captain-run.png', { frameWidth: 64, frameHeight: 30 });
 
+        //load enemies
+        this.load.image('whale', 'assets/character/whale.png');
 
+        //load audio
         this.load.audio('bgm','assets/audio/bgm.mp3');
         this.load.audio('lose','assets/audio/lose.mp3');
         this.load.audio('pick','assets/audio/pick.mp3');
@@ -56,7 +58,7 @@ class MyScene extends Phaser.Scene {
 
     create ()
     {   
-        const count = 100;
+        const count = 3;
         let groundX = 400;
         const width = this.scale.width;
         const height = this.scale.height;
@@ -72,29 +74,28 @@ class MyScene extends Phaser.Scene {
         // play bgm
         this.bgm.play();
 
-        //  A simple background for our game
-        createAligned(this, count, 'bg', 0.5);
-        createAligned(this, count, 'mountain', 0.5);
-        createAligned(this, count, 'cloud', 0.25);
-
-        createAligned(this, count, 'hill1', 0.75);
+        //  create scrolling background
+        // createAligned(this, count, 'bg', 0.5);
+        // createAligned(this, count, 'mountain', 0.5);
+        // createAligned(this, count, 'cloud', 0.25);
+        // createAligned(this, count, 'hill1', 0.75);
 
         //  The platforms group contains the ground and the 2 ledges we can jump on
         this.platforms = this.physics.add.staticGroup();
-
+        this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
         //  Here we create the ground.
         //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
-        this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
-        for (var i = 0; i <10; i++) {
-            this.platforms.create(groundX, 568, 'ground').setScale(2).refreshBody();
-            groundX+= 400; 
-        }
+        // this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
+        // for (var i = 0; i <3; i++) {
+        //     this.platforms.create(groundX, 568, 'ground').setScale(2).refreshBody();
+        //     groundX+= 400; 
+        // }
 
         // The player and its settings
         this.player = this.physics.add.sprite(100, 450, 'dude',0);
-        this.player.setScale(2);
+        this.player.body.setSize();
+        this.player.setScale(2).setBounce(0.2);
         //  Player physics properties. Give the little guy a slight bounce.
-        this.player.setBounce(0.2);
         //this.player.setCollideWorldBounds(true);
 
         this.cameras.main.startFollow(this.player, true, 0.09, 0.09);
@@ -110,7 +111,7 @@ class MyScene extends Phaser.Scene {
         this.anims.create({
             key: 'turn',
             frames: [ { key: 'dude-right', frame: 0 } ],
-            frameRate: 20
+            frameRate: 10
         });
 
         this.anims.create({
@@ -120,6 +121,12 @@ class MyScene extends Phaser.Scene {
             repeat: -1
         });
 
+        let randomWhaleX = Phaser.Math.Between(0,width);
+        //crete enemy whale 
+        this.whale = this.physics.add.image(randomWhaleX,0,'whale');
+        this.whale.body.setAllowGravity(false); // disable whale gravity
+        this.whale.setVelocity(0,300);
+
         //  Input Events
         this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -127,16 +134,22 @@ class MyScene extends Phaser.Scene {
         scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
         //  Collide the player and the star with the platforms
         this.physics.add.collider(this.player, this.platforms);
+        this.physics.add.collider(this.player, this.whale, this.getHit,null,this);
+        //this.physics.add.collider(this.whale, this.platforms);
 
         //  Checks to see if the player overlaps with any of the star, if he does call the collectStar function
     
         //create camera 
         this.cameras.main.setBounds(0, 0, width *5, height);
 
+
+
     }
 
     update ()
     {
+        this.whaleDrop(this.whale);
+
         const cam = this.cameras.main;
         const speed = 5;
         if (this.gameOver)
@@ -172,20 +185,33 @@ class MyScene extends Phaser.Scene {
             this.player.setVelocityY(-330);
         }
     }
+
+    whaleDrop (whale){
+        if(whale.y > this.scale.height){
+            whale.y = 0;
+            whale.x = Phaser.Math.Between(this.scale.width,0);
+            console.log("new whale appear");
+        }
+    }
+    getHit(){
+        gameOver = true;
+    }
 }
+
 
 
 
 
 const game = new Phaser.Game({
     type: Phaser.AUTO,
+    parent: 'game',
     width: 800,
     height: 600,
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 300 },
-            debug: false
+            gravity: { y: 300},
+            debug: true        
         }
     },
     scene: MyScene
