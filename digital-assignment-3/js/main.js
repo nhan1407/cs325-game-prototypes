@@ -78,7 +78,7 @@ class MyScene extends Phaser.Scene {
 
         // play bgm
         this.bgm.play();
-
+        console.log("reset");
         //  create scrolling background
         createAligned(this, count, 'bg', 0.5);
         createAligned(this, count, 'mountain', 0.5);
@@ -189,7 +189,7 @@ class MyScene extends Phaser.Scene {
 
         //  Input Events
         this.cursors = this.input.keyboard.createCursorKeys();
-        //this.reset = this.input.keyboard.addKey('R');
+        this.reset = this.input.keyboard.addKey('R');
 
         //  The score
         scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
@@ -271,14 +271,15 @@ class MyScene extends Phaser.Scene {
             this.player.setVelocityY(-330);
         }
 
-        // if(this.reset.isDown){
-        //     this.bgm.stop();
-        //     this.win.stop();
-        //     this.lose.stop();
-        //     this.scene.restart();
-        //     console.log("reset");
+        if(this.reset.isDown){
+            this.bgm.stop();
+            this.win.stop();
+            this.lose.stop();
+            this.physics.resume();
+            this.gameOver = false;
+            this.scene.restart();
 
-        // }
+        }
     }
 
     whaleDrop (whale,playerX){
@@ -320,14 +321,14 @@ class MyScene extends Phaser.Scene {
         this.bgm.stop();
         this.lose.play();
         let style = { font: "30px Tahoma", fill: "#000000", align: "center" };
-        let text = this.add.text( this.player.x, this.player.y-168, "You Lose\n", style );
+        let text = this.add.text( this.player.x, this.player.y-168, "You Lose\n Press R to Play Again", style );
         this.gameOver = true;
     }
     getChest(){
         this.bgm.stop();
         this.win.play();
         let style = { font: "30px Tahoma", fill: "#000000", align: "center" };
-        let text = this.add.text( this.player.x, this.player.y-168, "Congratulation!\nYou Found The Treasure Chest", style );
+        let text = this.add.text( this.player.x-200, this.player.y-168, "Congratulation!\nYou Found The Treasure Chest", style );
         this.gameOver = true;
     }
 
@@ -345,8 +346,8 @@ const game = new Phaser.Game({
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 300},
-            debug: true        
+            gravity: { y: 600},
+            debug: false        
         }
     },
     scene: MyScene
