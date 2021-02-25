@@ -1,4 +1,4 @@
-import "./phaser.js";
+    import "./phaser.js";
 
 // You can copy-and-paste the code from any of the examples at https://examples.phaser.io here.
 // You will need to change the `parent` parameter passed to `new Phaser.Game()` from
@@ -38,27 +38,31 @@ class MyScene extends Phaser.Scene {
         this.load.image('ground', 'assets/pirate-map.png');
 
         //load scrolling image
-        this.load.image('tree', 'assets/scroll/hill2.png');
         this.load.image('hill1', 'assets/scroll/hill1.png');
         this.load.image('mountain', 'assets/scroll/mountain.png');
         this.load.image('cloud', 'assets/scroll/cloud.png');
 
         //load character
-        this.load.spritesheet('dude-right', 'assets/character/captain-run.png', { frameWidth: 64, frameHeight: 30 });
+        this.load.spritesheet('dude-right', 'assets/character/captain-run1.png', { frameWidth: 32, frameHeight: 32 });
 
         //load enemies
-        this.load.image('whale', 'assets/character/whale.png');
+        this.load.spritesheet('whale', 'assets/character/whale-fall.png', { frameWidth: 66, frameHeight: 40 });
+        this.load.spritesheet('rino', 'assets/character/rino.png', { frameWidth: 52, frameHeight: 30 });
+
+        //load chest image
+        this.load.image('chest', 'assets/chest.png');
 
         //load audio
         this.load.audio('bgm','assets/audio/bgm.mp3');
-        this.load.audio('lose','assets/audio/lose.mp3');
-        this.load.audio('pick','assets/audio/pick.mp3');
+        this.load.audio('lose','assets/audio/sad-song.mp3');
+        this.load.audio('win','assets/audio/classic-song.mp3');
+        this.load.audio('bounce','assets/audio/bounce.mp3');
 
     }
 
     create ()
     {   
-        const count = 3;
+        const count = 10;
         let groundX = 400;
         const width = this.scale.width;
         const height = this.scale.height;
@@ -69,32 +73,39 @@ class MyScene extends Phaser.Scene {
         // add bgm 
         this.bgm = this.sound.add('bgm');
         this.lose = this.sound.add('lose');
-        this.pick = this.sound.add('pick');
+        this.win = this.sound.add('win');
+        this.bounce = this.sound.add('bounce');
 
         // play bgm
         this.bgm.play();
 
         //  create scrolling background
-        // createAligned(this, count, 'bg', 0.5);
-        // createAligned(this, count, 'mountain', 0.5);
-        // createAligned(this, count, 'cloud', 0.25);
-        // createAligned(this, count, 'hill1', 0.75);
+        createAligned(this, count, 'bg', 0.5);
+        createAligned(this, count, 'mountain', 0.5);
+        createAligned(this, count, 'cloud', 0.25);
+        createAligned(this, count, 'hill1', 0.75);
 
         //  The platforms group contains the ground and the 2 ledges we can jump on
         this.platforms = this.physics.add.staticGroup();
-        this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
+        //this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
         //  Here we create the ground.
         //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
-        // this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
-        // for (var i = 0; i <3; i++) {
-        //     this.platforms.create(groundX, 568, 'ground').setScale(2).refreshBody();
-        //     groundX+= 400; 
-        // }
+        this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
+        
+        // for loop to create more platforms
+        for (var i = 0; i <10; i++) {
+            this.platforms.create(groundX, 568, 'ground').setScale(2).refreshBody();
+            groundX+= 400; 
+        }
+
+        //add chest in the end of game
+        this.chest = this.physics.add.image(groundX- 100,500,'chest').setScale(1.5);
 
         // The player and its settings
-        this.player = this.physics.add.sprite(100, 450, 'dude',0);
-        this.player.body.setSize();
+        this.player = this.physics.add.sprite(100, 450, 'dude',2);
+        this.player.setSize(16,32);
         this.player.setScale(2).setBounce(0.2);
+
         //  Player physics properties. Give the little guy a slight bounce.
         //this.player.setCollideWorldBounds(true);
 
@@ -110,7 +121,7 @@ class MyScene extends Phaser.Scene {
 
         this.anims.create({
             key: 'turn',
-            frames: [ { key: 'dude-right', frame: 0 } ],
+            frames: [ { key: 'dude-right', frame: 2}],
             frameRate: 10
         });
 
@@ -121,26 +132,94 @@ class MyScene extends Phaser.Scene {
             repeat: -1
         });
 
-        let randomWhaleX = Phaser.Math.Between(0,width);
+        //whale animation
+        this.anims.create({
+            key: 'whale-anims',
+            frames: this.anims.generateFrameNumbers('whale', { start: 0, end: 1 }),
+            frameRate: 10,
+            repeat: -1
+        });
+        // rino animation 
+        this.anims.create({
+            key: 'rino-anims',
+            frames: this.anims.generateFrameNumbers('rino', { start: 0, end: 5 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+
         //crete enemy whale 
-        this.whale = this.physics.add.image(randomWhaleX,0,'whale');
+        this.whale = this.physics.add.sprite(Phaser.Math.Between(0,width),0,'whale')
+        .setSize(32,5)
+        .setVelocity(Phaser.Math.Between(-2,2) *-100,Phaser.Math.Between(3,6)*100)
+        .setBounce(1);
+        
         this.whale.body.setAllowGravity(false); // disable whale gravity
-        this.whale.setVelocity(0,300);
+        this.whale.anims.play('whale-anims', true);
+
+        this.whale2 = this.physics.add.sprite(Phaser.Math.Between(0,width),0,'whale')
+        .setSize(32,5)
+        .setVelocity(Phaser.Math.Between(-2,2) *100,Phaser.Math.Between(3,6)*100)
+        .setBounce(1);
+        
+        this.whale2.body.setAllowGravity(false); // disable whale gravity
+        this.whale2.anims.play('whale-anims', true);
+
+        this.whale3 = this.physics.add.sprite(Phaser.Math.Between(0,width),0,'whale')
+        .setSize(32,5)
+        .setVelocity(Phaser.Math.Between(-2,2) *-100,Phaser.Math.Between(3,6)*100)
+        .setBounce(1);
+        
+        this.whale3.body.setAllowGravity(false); // disable whale gravity
+        this.whale3.anims.play('whale-anims', true);
+
+        this.whale4 = this.physics.add.sprite(Phaser.Math.Between(0,width),0,'whale')
+        .setSize(32,5)
+        .setVelocity(Phaser.Math.Between(-2,2) *100,Phaser.Math.Between(3,6)*100)
+        .setBounce(1);
+        
+        this.whale4.body.setAllowGravity(false); // disable whale gravity
+        this.whale4.anims.play('whale-anims', true);
+        //create enemy rino
+        this.rino = this.physics.add.sprite(800, 450, 'rino')
+        .setSize(34,24)
+        .setScale(2)
+        .setAccelerationX(-300);
+        this.rino.anims.play('rino-anims', true);
 
         //  Input Events
         this.cursors = this.input.keyboard.createCursorKeys();
+        //this.reset = this.input.keyboard.addKey('R');
 
         //  The score
         scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
         //  Collide the player and the star with the platforms
         this.physics.add.collider(this.player, this.platforms);
-        this.physics.add.collider(this.player, this.whale, this.getHit,null,this);
-        //this.physics.add.collider(this.whale, this.platforms);
 
-        //  Checks to see if the player overlaps with any of the star, if he does call the collectStar function
-    
+        //collide rino with platform
+        this.physics.add.collider(this.rino, this.platforms);
+        this.physics.add.collider(this.player, this.rino, this.getHit,null,this);
+
+        // collide whale with player
+        this.physics.add.collider(this.player, this.whale, this.getHit,null,this);
+        this.physics.add.collider(this.player, this.whale2, this.getHit,null,this);
+        this.physics.add.collider(this.player, this.whale3, this.getHit,null,this);
+        this.physics.add.collider(this.player, this.whale4, this.getHit,null,this);
+
+        // collide whale with platforms
+        this.physics.add.collider(this.whale, this.platforms, this.playBounceSFX,null,this);
+        this.physics.add.collider(this.whale2, this.platforms, this.playBounceSFX,null,this);
+        this.physics.add.collider(this.whale3, this.platforms, this.playBounceSFX,null,this);
+        this.physics.add.collider(this.whale4, this.platforms, this.playBounceSFX,null,this);
+
+        // collide  chest with platformsr
+        this.physics.add.collider(this.chest, this.platforms);
+        
+        // chest can also overlap with player to win the game
+        this.physics.add.overlap(this.player, this.chest, this.getChest,null,this);
+
         //create camera 
-        this.cameras.main.setBounds(0, 0, width *5, height);
+        this.cameras.main.setBounds(0, 0, width *10, height);
 
 
 
@@ -148,13 +227,20 @@ class MyScene extends Phaser.Scene {
 
     update ()
     {
-        this.whaleDrop(this.whale);
+        this.whaleDrop(this.whale,this.player.x);
+        this.whaleDrop(this.whale2,this.player.x);
+        this.whaleDrop(this.whale3,this.player.x);
+        this.whaleDrop(this.whale4,this.player.x);
+
+
+        this.rinoTurn(this.rino,this.player.x);
 
         const cam = this.cameras.main;
         const speed = 5;
         if (this.gameOver)
         {
-            return;
+            this.physics.pause();
+            this.player.play('turn');
         }
 
         if (this.cursors.left.isDown)
@@ -184,18 +270,67 @@ class MyScene extends Phaser.Scene {
         {
             this.player.setVelocityY(-330);
         }
+
+        // if(this.reset.isDown){
+        //     this.bgm.stop();
+        //     this.win.stop();
+        //     this.lose.stop();
+        //     this.scene.restart();
+        //     console.log("reset");
+
+        // }
     }
 
-    whaleDrop (whale){
-        if(whale.y > this.scale.height){
+    whaleDrop (whale,playerX){
+        if(whale.y > this.scale.height)
+        {
             whale.y = 0;
-            whale.x = Phaser.Math.Between(this.scale.width,0);
+            whale.x = Phaser.Math.Between(playerX-400,playerX+400);
+            whale.setVelocity(Phaser.Math.Between(-2,2) *100,Phaser.Math.Between(3,6)*100)
             console.log("new whale appear");
         }
+        if (whale.y < 0)
+        {
+            whale.y = 0;
+            whale.x = Phaser.Math.Between(playerX-400,playerX+400);
+            whale.setVelocity(Phaser.Math.Between(-2,2) *100,Phaser.Math.Between(3,6)*100)
+        }
     }
+    rinoTurn(rino, playerX){
+        if (rino.x < 0 )
+        {
+            rino.x = playerX +800;
+            rino.setVelocityX(400,0);
+            //rino.flipX = true;
+            console.log("rino turn");
+        }
+        // else if (rino.x > playerX +400)
+        // {
+        //     rino.x = playerX - 800;
+        //     rino.flipX = false;
+        //     rino.setVelocityX(-400);
+        // }
+    }
+    playBounceSFX()
+    {
+        this.bounce.play();
+    }
+
     getHit(){
-        gameOver = true;
+        this.bgm.stop();
+        this.lose.play();
+        let style = { font: "30px Tahoma", fill: "#000000", align: "center" };
+        let text = this.add.text( this.player.x, this.player.y-168, "You Lose\n", style );
+        this.gameOver = true;
     }
+    getChest(){
+        this.bgm.stop();
+        this.win.play();
+        let style = { font: "30px Tahoma", fill: "#000000", align: "center" };
+        let text = this.add.text( this.player.x, this.player.y-168, "Congratulation!\nYou Found The Treasure Chest", style );
+        this.gameOver = true;
+    }
+
 }
 
 
