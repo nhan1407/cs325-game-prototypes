@@ -44,7 +44,6 @@ class MyScene extends Phaser.Scene {
 
         //load character
         this.load.spritesheet('dude-right', 'assets/character/captain-run1.png', { frameWidth: 32, frameHeight: 32 });
-        //this.load.spritesheet('attack', 'assets/character/attack/attack.png', { frameWidth: 64, frameHeight: 40 })
 
         //load enemies
         this.load.spritesheet('whale', 'assets/character/whale-fall.png', { frameWidth: 66, frameHeight: 40 });
@@ -139,11 +138,6 @@ class MyScene extends Phaser.Scene {
             repeat: -1
         });
 
-        // this.anims.create({
-        //     key: 'attack',
-        //     frames: [ { key: 'attack', frame: 1}],
-        //     frameRate: 10
-        // });
 
         //whale animation
         this.anims.create({
@@ -185,21 +179,21 @@ class MyScene extends Phaser.Scene {
         this.whale2.body.setAllowGravity(false); // disable whale gravity
         this.whale2.anims.play('whale-anims', true);
 
-        // this.whale3 = this.physics.add.sprite(Phaser.Math.Between(0,width),0,'whale')
-        // .setSize(32,5)
-        // .setVelocity(Phaser.Math.Between(-2,2) *-100,Phaser.Math.Between(3,6)*100)
-        // .setBounce(1);
+        this.whale3 = this.physics.add.sprite(Phaser.Math.Between(0,width),0,'whale')
+        .setSize(32,5)
+        .setVelocity(Phaser.Math.Between(-2,2) *-100,Phaser.Math.Between(3,6)*100)
+        .setBounce(1);
         
-        // this.whale3.body.setAllowGravity(false); // disable whale gravity
-        // this.whale3.anims.play('whale-anims', true);
+        this.whale3.body.setAllowGravity(false); // disable whale gravity
+        this.whale3.anims.play('whale-anims', true);
 
-        // this.whale4 = this.physics.add.sprite(Phaser.Math.Between(0,width),0,'whale')
-        // .setSize(32,5)
-        // .setVelocity(Phaser.Math.Between(-2,2) *100,Phaser.Math.Between(3,6)*100)
-        // .setBounce(1);
+        this.whale4 = this.physics.add.sprite(Phaser.Math.Between(0,width),0,'whale')
+        .setSize(32,5)
+        .setVelocity(Phaser.Math.Between(-2,2) *100,Phaser.Math.Between(3,6)*100)
+        .setBounce(1);
         
-        // this.whale4.body.setAllowGravity(false); // disable whale gravity
-        // this.whale4.anims.play('whale-anims', true);
+        this.whale4.body.setAllowGravity(false); // disable whale gravity
+        this.whale4.anims.play('whale-anims', true);
         //create enemy rino
         this.rino = this.physics.add.sprite(0, 450, 'rino')
         .setSize(34,24)
@@ -217,7 +211,7 @@ class MyScene extends Phaser.Scene {
         //  Input Events
         this.cursors = this.input.keyboard.createCursorKeys();
         this.reset = this.input.keyboard.addKey('R');
-        this.space = this.input.keyboard.addKey('SPACE');
+        //this.space = this.input.keyboard.addKey('SPACE');
 
 
         // //  The score
@@ -233,8 +227,8 @@ class MyScene extends Phaser.Scene {
         // collide whale with player
         this.physics.add.collider(this.player, this.whale, this.getHit,null,this);
         this.physics.add.collider(this.player, this.whale2, this.getHit,null,this);
-        // this.physics.add.collider(this.player, this.whale3, this.getHit,null,this);
-        // this.physics.add.collider(this.player, this.whale4, this.getHit,null,this);
+        this.physics.add.collider(this.player, this.whale3, this.getHit,null,this);
+        this.physics.add.collider(this.player, this.whale4, this.getHit,null,this);
 
         //collide slime with platform
         this.physics.add.collider(this.slime, this.platforms);
@@ -243,8 +237,8 @@ class MyScene extends Phaser.Scene {
         // collide whale with platforms
         this.physics.add.collider(this.whale, this.platforms, this.playBounceSFX,null,this);
         this.physics.add.collider(this.whale2, this.platforms, this.playBounceSFX,null,this);
-        // this.physics.add.collider(this.whale3, this.platforms, this.playBounceSFX,null,this);
-        // this.physics.add.collider(this.whale4, this.platforms, this.playBounceSFX,null,this);
+        this.physics.add.collider(this.whale3, this.platforms, this.playBounceSFX,null,this);
+        this.physics.add.collider(this.whale4, this.platforms, this.playBounceSFX,null,this);
 
         // collide  chest with platformsr
         this.physics.add.collider(this.chest, this.platforms);
@@ -264,14 +258,15 @@ class MyScene extends Phaser.Scene {
 
         this.whaleDrop(this.whale,this.player.x);
         this.whaleDrop(this.whale2,this.player.x);
-        // this.whaleDrop(this.whale3,this.player.x);
-        // this.whaleDrop(this.whale4,this.player.x);
-        //console.log("player.x" +this.player.x);
-        if (this.player.x > 1000) 
+        this.whaleDrop(this.whale3,this.player.x);
+        this.whaleDrop(this.whale4,this.player.x);
+        if (this.player.x > 1000 ) 
         {
+            this.rino.flipX = true;
             this.rinoTurn(this.rino,this.player.x);
         }
-        this.slimeJump(this.slime, this.player.x);
+
+        this.slimeJump(this.slime,this.player.x);
 
 
 
@@ -311,9 +306,9 @@ class MyScene extends Phaser.Scene {
             this.player.setVelocityY(-330);
         }
 
-        if (this.space.isDown){
-            this.player.anims.play('attack');
-        }
+        // if (this.space.isDown){
+        //     this.player.anims.play('attack');
+        // }
 
         if(this.reset.isDown){
             this.bgm.stop();
@@ -332,7 +327,7 @@ class MyScene extends Phaser.Scene {
             slime.setVelocity(-100,-400);
         }
         if(slime.x < 100){
-            slime.x = playerX +800;        
+            slime.x = playerX +1000;        
         }
     }
 
@@ -352,8 +347,8 @@ class MyScene extends Phaser.Scene {
         }
     }
     rinoTurn(rino, playerX){
-        rino.flipX = true;
-        rino.setAccelerationX(100);
+
+        rino.setAccelerationX(150);
           if (rino.x > playerX+500)
         {
             rino.setVisible(false);
