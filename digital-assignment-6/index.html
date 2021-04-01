@@ -19,46 +19,41 @@ body
 <body>
 <div id="game"></div>
 <div id="readme">
-<h2>Treasure Hunt</h2>
+<h2>Little Bird Adventure</h2>
 
 <ul>
 <li><strong>Originality:</strong>
-	An Pirate Advanture game
+	Flappy bird
 </li>
 
 <li><strong>Technical Merit:</strong>
 <ul>
-	<li>It use the game setBounce and setVelocity to run the enemies. It recycle the monster everytime it move out of the camera bound. </li>
-	<li>* Note: I try to make it chase the character instead. Stil working on it and animation. </li>
+	<li>The game still using scroll background as the main vfx. </li>
+	<li>A timer can be added to turn this into a speedrun game</li>
 </ul>
 
 <ul>
-	<li>(Forgot to mention on last iteration). The implementation of parallax background can be extend, which provide  space to add more features </li>
-	<li>With 4 layer of the background and keep scrolling while character moving, so the background will never get old, and help player to have the feeling of they are moving on the island.</li>
+	<li>The implementation of parallax background can be extend, which provide  space to add more features </li>
 </ul>
 
 <ul>
 	<li>
-	The interesting thing is that I had a plan for this game in the future such as player can attack enemies (still developing), more platforms will be added, more enemies (bird, trap, pirates, etc). 
+	There are multiple type trap such as spike and rotating chainsaw will be added.
 	</li>
 </ul>
 
 <ul>
 	<li>
-	Item such as potion, weapon can also be add to make character stronger.
+	Power-up items are considerable.
 	</li>
 </ul>
 </li>
 
 <li><strong>Prototype Postmortem:</strong>
 What did you learn from this prototype?
-I have learn a lot throughout this prototype. The hardest one for me is setting up a parallax background, which make an infinite background layer. 
-I also learn techniques of recycling sprite when they get out of screen.
+My plan was using socket io to make mutilple player control the character, but it doesn't work in the end.
 
 These are techniques that I have learnt from this assignment:
-	<ul>
-		<li>Animation:  <a href="https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Image.html">Image </a></li>
-	</ul>
 	<ul>
 		<li>Parralax background:  <a href="https://www.youtube.com/watch?v=Y3C5HliTDwM"> Parralax background </a></li>
 	</ul>
@@ -83,80 +78,57 @@ Did you make your prototype assets from scratch? Did you borrow them? Cite your 
 </ul>
 
 <ul>
-<li>Player Character Sprite: <a href="https://pixelfrog-assets.itch.io/treasure-hunters">Player Character Sprite</a></li>
-</ul>
-
-<ul>
-<li>Whale Sprite: <a href="https://pixelfrog-assets.itch.io/pirate-bomb">Whale Sprite</a></li>
-</ul>
-<ul>
-<li>Rino Sprite: <a href="https://pixelfrog-assets.itch.io/pixel-adventure-2">Rino Sprite</a></li>
-</ul>
-
-<ul>
-<li> BGM: <a href="https://www.youtube.com/watch?v=OD8HYH1ZpUM&t=47s"> BGM</a></li>
-</ul>
-
-<ul>
-<li>Sad song SFX: <a href="https://youtu.be/jlcLzC5bIf0?t=196">Sad Song SFX</a></li>
-</ul>
-
-<ul>
-<li>Classic song SFX: <a href="https://youtu.be/jlcLzC5bIf0?t=212">Classic song SFX</a></li>
-</ul>
-
-<ul>
-<li>Bounce  SFX: <a href="https://opengameart.org/content/cute-cartoon-jump-sound-effect">Bounce SFX</a></li>
+<li>Player Character Sprite: <a href="https://opengameart.org/content/fat-bird-sprite-sheets-for-gamedev">Player Character Sprite</a></li>
 </ul>
 
 </li>
 
 <li><strong>Prototype Closest Other Game:</strong>
-	It is really simple just like a mario games (or any 2d platform game)
+	Mario and flappy bird
 </li>
 
 <li><strong>High Concept:</strong>
-	Dodging obstacle and reach the treasure chest
+	Dodging obstacle and reach the treasure chet
 </li>
 
 <li><strong>Theme:</strong>
-	Pirates
+	More than one people control the character.
 </li>
 
 <li><strong>Mandated Variety:</strong>
-For this games, it can be an reflexibility training game, or a joker game depends on players
+For this games, it can be an reflexibility training game, or a joker game depends on players. It can be a cooporate or speedrun game as well
 </li>
 
 <li><strong>Prototype Goal:</strong>
 What game mechanic is this prototype evaluating?
-	Advanture + Platformer
+	Adventure + Platformer + mutilplayer
 </li>
 
 <li><strong>Player Experience Goals:</strong>
 What experience do you want players to have when playing your game?
-	Enjoy a happy advanture of Captain Clown Nose. 
+	Enjoy a happy advanture of big fat green bird.
 </li>
 
 <li><strong>Gameplay:</strong>
 A paragraph describing the actions the player can perform, the system dynamics, and the core mechanic. Include a concise explanation of the prototype’s inputs and their expected effects (how to play). You can also describe game play that is not in the prototype. You may include mock-up images for parts of the game not in the prototype.
 
-	This is just a demo for the game, I will try to add more features to the game in the future. Anyway, gameplay for this week is just controling Captain Clown Nose to move foward, dodge enemies, and reach the treasure chest.
+	One player will open the game, and share the screen with other players. Then he/she must turn off the monitor, and moving character based on other players' instruction.
 </li>
 
 <li><strong>Strategies:</strong>
 What player strategies do you expect will be effective at playing this game?
 
-	The strategies here is playing careful, predicting moving enemies instead of trying to speed run.
+	The strategies here is playing careful instead of trying to speed run.
 </li>
 
 <li><strong>Story/Setting/Premise:</strong>
 A paragraph about the world your game is set in and who the characters are. What makes the game world and its occupants unique and interesting? Do the tokens represent something? If the game has a backstory, mention it here. If the game is abstract, then say so.
 How will the dramatic tension interact with the gameplay tension?
-	Captain Clown Nose is in on an advanture to find the most mystery treasure which was hidding on a dangerous island. There are many dangerous animals (whale, rhino, even evil monster like slime) on the island. Your role is help Captain Clown Nose come over all those challenge and get the treasue in the end.
+	Big fat green bird try to find a way home. Let's help him do it.
 </li>
 
 <li><strong>Target Audience:</strong>
-	It would be kids and young teenager. Anyone who is interested in pirates.
+	It would be kids and young teenager. Anyone who is interested in flappy bird/
 </li>
 
 <li><strong>Play Time:</strong>
