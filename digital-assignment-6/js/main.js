@@ -20,7 +20,7 @@ class MyScene extends Phaser.Scene {
 
     preload ()
     {   //load background and ground layer
-        this.load.image('bg', 'assets/background/sky2.jpg');
+        this.load.image('bg', 'assets/background/sky.jpg');
         this.load.image('player', 'assets/characters/bird.png');
 
 
@@ -36,7 +36,7 @@ class MyScene extends Phaser.Scene {
     {   
         const width = this.scale.width;
         const height = this.scale.height;
-
+        this.physics.world.setBounds(0, 0, 1000, 800); 
         var gameOver = false;
         var score = 0;
         var scoreText;
@@ -49,29 +49,32 @@ class MyScene extends Phaser.Scene {
         //this.bgm.play();
 
         //add background image
-        this.bg = this.add.image(400,300,'bg');
+        this.bg = this.add.image(0,0,'bg');
         this.bg.setScale(1.5);
 
         this.text = this.add.text(10, 10, 'Health: 100', { font: '32px Courier', fill: '#000000' });
 
 
         // The player and its settings
-        this.player = this.physics.add.sprite(200, 450, 'player',2);
-        this.player.setSize(32,32);
-        this.player.setScale(0.1);
-        this.player.setCollideWorldBounds(true);
+        this.player = this.physics.add.sprite(0, 1080, 'player');
+        //this.player.setSize(8,8);
+        this.player.setScale(0.05);
         //  Player physics properties. Give the little guy a slight bounce.
-        //this.player.setCollideWorldBounds(true);
+        this.player.setCollideWorldBounds(true);
 
-        this.cameras.main.startFollow(this.player, true, 0.09, 0.09);
+        //create camera 
+        this.cameras.main.setBounds(0, 0, 2160, 1080);
+        this.cameras.main.startFollow(this.player);
+        this.cameras.main.setSize(800,600);
+        // this.cameras.zoom = 3;
 
         //  Input Events
         this.cursors = this.input.keyboard.createCursorKeys();
         this.reset = this.input.keyboard.addKey('R');
 
 
-        //create camera 
-        this.cameras.main.setBounds(100, 0, width, height);
+       
+
 
 
 
@@ -89,7 +92,7 @@ class MyScene extends Phaser.Scene {
             this.player.play('turn');
         }   
 
-        this.text.setText('Health: ');
+        this.text.setText('Health: 10000000');
 
         this.player.setVelocity(0);
 
@@ -131,11 +134,11 @@ const game = new Phaser.Game({
     type: Phaser.AUTO,
     parent: 'game',
     width: 800,
-    height: 600,
+    height: 500,
     physics: {
         default: 'arcade',
         arcade: {
-            debug: false        
+            debug: true        
         }
     },
     scene: MyScene
