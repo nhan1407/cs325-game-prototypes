@@ -125,7 +125,7 @@ class MyScene extends Phaser.Scene {
 
         this.physics.world.bounds.width = groundX;
         
-        this.text = this.add.text(600, 200, 'Press UP to fly', { font: '32px Courier', fill: '#000000' });
+        this.text = this.add.text(200, 150, 'Press UP to fly', { font: '32px Courier', fill: '#000000' });
 
 
         // The player and its settings
@@ -163,15 +163,17 @@ class MyScene extends Phaser.Scene {
     {
         var flipFlop;
         const cam = this.cameras.main;
-        const speed = 1.75;
+        var speed = 1.75;
         cam.scrollX +=speed;
         this.player.x+= speed;
 
         if (this.gameOver)
         {
-            this.physics.pause();
             this.player.play('turn');
-            this.scene.pause()
+            this.physics.pause();
+            cam.scrollX =0;
+            this.player.x= 200;
+            this.player.y= 400
         }   
         
         if(this.reset.isDown){
@@ -180,6 +182,8 @@ class MyScene extends Phaser.Scene {
             this.lose.stop();
             this.gameOver = false;
             this.scene.restart();
+            this.scene.resume();
+
         }
 
         if (this.cursors.up.isDown)
@@ -204,7 +208,7 @@ class MyScene extends Phaser.Scene {
         this.bgm.stop();
         this.lose.play();
         let style = { font: "30px Tahoma", fill: "#000000", align: "center" };
-        let text = this.add.text( this.player.x + 200, this.player.y-100, "You Lose\n Press R to Play Again", style );
+        let text = this.add.text( this.player.x + 200, this.player.y-250, "You Lose\n Press R to Play Again", style );
         this.gameOver = true;
     }
     getChest(){
