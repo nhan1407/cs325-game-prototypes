@@ -19,42 +19,37 @@ body
 <body>
 <div id="game"></div>
 <div id="readme">
-<h2>Little Bird Adventure</h2>
+<h2>Build the Tower</h2>
 
 <ul>
 <li><strong>Originality:</strong>
-	Flappy bird
+	A Tower Builder from scratch
 </li>
 
 <li><strong>Technical Merit:</strong>
 <ul>
-	<li>The game still using scroll background as the main vfx. </li>
+	<li>The game use tween to make the swing block on the top </li>
 </ul>
 
 <ul>
-	<li>The implementation of parallax background can be extend, which provide  space to add more features </li>
-</ul>
-
-<ul>
-	<li>
-		Using object's visibiblity control 
-	</li>
+	<li>Make use of both dynamic and static group (I realized that the dynamic objects can't hold more than 2 blocks)</li>
 </ul>
 
 <ul>
 	<li>
-	Using some algorithms to create random tube placement
+		Special algorithm to check if the block is place correctly or not ()
 	</li>
 </ul>
-</li>
+
 
 <li><strong>Prototype Postmortem:</strong>
 What did you learn from this prototype?
-My plan was using socket io to make mutilple player control the character, but it doesn't work in the end.
+The game still have some issue that must be fixed. For example if player start droping a blocks before the previous blocks landed, the game will end(crash). 
+There also some random distance before each blocks when we drop them. I'm also working on improving the game with scoreboard and unlimited mode 
 
 These are techniques that I have learnt from this assignment:
 	<ul>
-		<li>Parralax background:  <a href="https://www.youtube.com/watch?v=Y3C5HliTDwM"> Parralax background </a></li>
+		<li>Tween:  <a href="https://rexrainbow.github.io/phaser3-rex-notes/docs/site/tween/"> Tween </a></li>
 	</ul>
 </li>
 
@@ -65,24 +60,17 @@ Did you make your prototype assets from scratch? Did you borrow them? Cite your 
 </ul>
 
 <ul>
-<li>Parallax Background: <a href="https://free-game-assets.itch.io/free-parallax-2d-backgrounds"> Parallax Background</a></li>
+<li>Block Sprite: <a href="https://projectnotes.org/it-projects/tower-building-game-in-html-5-with-source-code/">Block Sprite </a></li>
 </ul>
 
-<ul>
-<li>Player Character Sprite: <a href="https://opengameart.org/content/fat-bird-sprite-sheets-for-gamedev">Player Character Sprite</a></li>
-</ul>
-
-<ul>
-<li>Player Character Sprite: <a href="https://flappycreator.com/index.php">Tube Sprite</a></li>
-</ul>
 </li>
 
 <li><strong>Prototype Closest Other Game:</strong>
-	flappy bird
+	Tower builder
 </li>
 
 <li><strong>High Concept:</strong>
-	Dodging obstacle until reaching the end 
+	Droping block to build a tower.
 </li>
 
 <li><strong>Theme:</strong>
@@ -90,23 +78,23 @@ Did you make your prototype assets from scratch? Did you borrow them? Cite your 
 </li>
 
 <li><strong>Mandated Variety:</strong>
-	For this games, it can be an reflexibility training game, or a joker game depends on players. It more likely a arcade game where people can spend time to relax
+	This is a arcade game, where player can use to kill time by buiding a tower.
 </li>
 
 <li><strong>Prototype Goal:</strong>
 What game mechanic is this prototype evaluating?
-	 Arcade
+	Arcade, simulator game
 </li>
 
 <li><strong>Player Experience Goals:</strong>
 What experience do you want players to have when playing your game?
-	Enjoy a happy advanture of big fat green bird.
+	Enjoy building a skycrapper
 </li>
 
 <li><strong>Gameplay:</strong>
 A paragraph describing the actions the player can perform, the system dynamics, and the core mechanic. Include a concise explanation of the prototype’s inputs and their expected effects (how to play). You can also describe game play that is not in the prototype. You may include mock-up images for parts of the game not in the prototype.
 
-	Click up arrow to control the big fat green bird dodge all the tubes
+	Press SPACEBAR to drop the block, build a skycrapper and win the game
 </li>
 
 <li><strong>Strategies:</strong>
@@ -118,16 +106,16 @@ What player strategies do you expect will be effective at playing this game?
 <li><strong>Story/Setting/Premise:</strong>
 A paragraph about the world your game is set in and who the characters are. What makes the game world and its occupants unique and interesting? Do the tokens represent something? If the game has a backstory, mention it here. If the game is abstract, then say so.
 How will the dramatic tension interact with the gameplay tension?
-	Big fat green bird try to find a way home. Let's help him do it.
+	A novice engineer try to learn how to build a skycrapper. Let's help him out
 </li>
 
 <li><strong>Target Audience:</strong>
-	It would be kids and young teenager. Anyone who is interested in flappy bird
+	It would be kids and young teenager. Anyone who is interested in building game
 </li>
 
 <li><strong>Play Time:</strong>
 How long does your game take to play?
-It should take sometime around 1 minutes to reach the end of the game. (if you can dodge all the object)
+It should take sometime around 1 minutes to win the game.
 </li>
 
 </ul>
